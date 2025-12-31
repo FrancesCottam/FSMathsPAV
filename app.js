@@ -260,7 +260,11 @@ const App = () => {
             <div className="bg-white rounded-2xl shadow-xl p-8 text-center">
               <Award className="w-24 h-24 mx-auto mb-4 text-yellow-500" />
               <h2 className="text-3xl font-bold mb-4">{stage === 'keywords' ? 'Keywords Complete!' : 'Practice Complete!'}</h2>
-              <div className={`bg-${topics[topic].color}-500 text-white rounded-xl p-6 mb-6`}>
+             className={
+  key === 'perimeter' ? 'bg-blue-500 text-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all transform hover:scale-105' :
+  key === 'area' ? 'bg-green-500 text-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all transform hover:scale-105' :
+  'bg-purple-500 text-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all transform hover:scale-105'
+}
                 <p className="text-xl mb-2">Your Score</p>
                 <p className="text-5xl font-bold">{score.correct}/{score.total}</p>
                 <p className="text-2xl mt-2">{percentage}%</p>

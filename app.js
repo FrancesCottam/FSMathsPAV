@@ -12,6 +12,8 @@ const App = () => {
   const [showFeedback, setShowFeedback] = useState(false);
   const [score, setScore] = useState({ correct: 0, total: 0 });
 
+  console.log('Screen:', screen, 'Topic:', topic, 'Mode:', mode, 'Stage:', stage);
+
   const topics = {
     perimeter: { name: 'Perimeter', color: '#3b82f6', icon: '📏', formula: '2 × (length + width)' },
     area: { name: 'Area', color: '#22c55e', icon: '⬛', formula: 'Length × Width' },
@@ -71,221 +73,340 @@ const App = () => {
 
   const reset = () => { setAnswer(''); setShowHint(false); setShowFeedback(false); };
 
+  // HOME SCREEN
   if (screen === 'home') {
-    return React.createElement('div', { className: "min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4" },
-      React.createElement('div', { className: "max-w-4xl mx-auto" },
-        React.createElement('div', { className: "bg-white rounded-2xl shadow-xl p-8 mb-6" },
-          React.createElement('h1', { className: "text-4xl font-bold text-gray-800 mb-2" }, '📐 Maths Practice'),
-          React.createElement('h2', { className: "text-2xl text-indigo-600 mb-4" }, 'Level 1: Area, Perimeter & Volume'),
-          React.createElement('p', { className: "text-gray-600" }, 'Master calculations with step-by-step practice')
-        ),
-        React.createElement('div', { className: "grid md:grid-cols-3 gap-6" },
-          Object.keys(topics).map(key =>
-            React.createElement('button', {
-              key: key,
-              onClick: () => { setTopic(key); setScreen('mode'); },
-              className: "text-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all transform hover:scale-105",
-              style: { backgroundColor: topics[key].color }
-            },
-              React.createElement('div', { className: "text-6xl mb-4" }, topics[key].icon),
-              React.createElement('h3', { className: "text-2xl font-bold mb-2" }, topics[key].name),
-              React.createElement('div', { className: "bg-white bg-opacity-20 rounded-lg p-3 mt-4 text-sm" },
-                React.createElement('p', { className: "font-semibold mb-1" }, 'Formula:'),
-                React.createElement('p', null, topics[key].formula)
-              )
-            )
-          )
-        )
-      )
+    return (
+      <div style={{ minHeight: '100vh', background: 'linear-gradient(to bottom right, #eff6ff, #e0e7ff)', padding: '1rem' }}>
+        <div style={{ maxWidth: '64rem', margin: '0 auto' }}>
+          <div style={{ background: 'white', borderRadius: '1rem', boxShadow: '0 10px 25px rgba(0,0,0,0.1)', padding: '2rem', marginBottom: '1.5rem' }}>
+            <h1 style={{ fontSize: '2.25rem', fontWeight: 'bold', color: '#1f2937', marginBottom: '0.5rem' }}>📐 Maths Practice</h1>
+            <h2 style={{ fontSize: '1.5rem', color: '#4f46e5', marginBottom: '1rem' }}>Level 1: Area, Perimeter & Volume</h2>
+            <p style={{ color: '#6b7280' }}>Master calculations with step-by-step practice</p>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.5rem' }}>
+            {Object.keys(topics).map(key => (
+              <button
+                key={key}
+                onClick={() => {
+                  console.log('Clicked:', key);
+                  setTopic(key);
+                  setScreen('mode');
+                }}
+                style={{
+                  backgroundColor: topics[key].color,
+                  color: 'white',
+                  borderRadius: '0.75rem',
+                  padding: '1.5rem',
+                  boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+                  border: 'none',
+                  cursor: 'pointer',
+                  transition: 'transform 0.2s',
+                  textAlign: 'center'
+                }}
+                onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
+                onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
+              >
+                <div style={{ fontSize: '3.75rem', marginBottom: '1rem' }}>{topics[key].icon}</div>
+                <h3 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '0.5rem' }}>{topics[key].name}</h3>
+                <div style={{ background: 'rgba(255,255,255,0.2)', borderRadius: '0.5rem', padding: '0.75rem', marginTop: '1rem', fontSize: '0.875rem' }}>
+                  <p style={{ fontWeight: '600', marginBottom: '0.25rem' }}>Formula:</p>
+                  <p>{topics[key].formula}</p>
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
     );
   }
 
+  // MODE SCREEN
   if (screen === 'mode') {
-    return React.createElement('div', { className: "min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4" },
-      React.createElement('div', { className: "max-w-3xl mx-auto" },
-        React.createElement('button', { onClick: () => setScreen('home'), className: "mb-4 flex items-center gap-2 text-gray-600 hover:text-gray-800 bg-white px-4 py-2 rounded-lg" },
-          React.createElement(Home, { size: 20 }), ' Back'
-        ),
-        React.createElement('div', { className: "bg-white rounded-2xl shadow-xl p-8 mb-6 text-center" },
-          React.createElement('div', { className: "text-6xl mb-4" }, topics[topic].icon),
-          React.createElement('h1', { className: "text-3xl font-bold mb-2" }, topics[topic].name)
-        ),
-        React.createElement('div', { className: "grid md:grid-cols-2 gap-6" },
-          React.createElement('button', {
-            onClick: () => { setMode('nonCalculator'); setScreen('stage'); },
-            className: "bg-orange-500 text-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all"
-          },
-            React.createElement('div', { className: "text-5xl mb-4" }, '✏️'),
-            React.createElement('h3', { className: "text-2xl font-bold mb-3" }, 'Non-Calculator')
-          ),
-          React.createElement('button', {
-            onClick: () => { setMode('calculator'); setScreen('stage'); },
-            className: "bg-blue-500 text-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all"
-          },
-            React.createElement(Calculator, { className: "w-16 h-16 mx-auto mb-4" }),
-            React.createElement('h3', { className: "text-2xl font-bold mb-3" }, 'Calculator')
-          )
-        )
-      )
+    return (
+      <div style={{ minHeight: '100vh', background: 'linear-gradient(to bottom right, #eff6ff, #e0e7ff)', padding: '1rem' }}>
+        <div style={{ maxWidth: '48rem', margin: '0 auto' }}>
+          <button 
+            onClick={() => setScreen('home')}
+            style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#4b5563', background: 'white', padding: '0.5rem 1rem', borderRadius: '0.5rem', border: 'none', cursor: 'pointer' }}
+          >
+            <Home size={20} /> Back
+          </button>
+
+          <div style={{ background: 'white', borderRadius: '1rem', boxShadow: '0 10px 25px rgba(0,0,0,0.1)', padding: '2rem', marginBottom: '1.5rem', textAlign: 'center' }}>
+            <div style={{ fontSize: '3.75rem', marginBottom: '1rem' }}>{topics[topic].icon}</div>
+            <h1 style={{ fontSize: '1.875rem', fontWeight: 'bold', marginBottom: '0.5rem' }}>{topics[topic].name}</h1>
+            <p style={{ color: '#6b7280' }}>Choose practice mode</p>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem' }}>
+            <button
+              onClick={() => {
+                setMode('nonCalculator');
+                setScreen('stage');
+              }}
+              style={{ backgroundColor: '#f97316', color: 'white', borderRadius: '0.75rem', padding: '2rem', boxShadow: '0 4px 6px rgba(0,0,0,0.1)', border: 'none', cursor: 'pointer' }}
+            >
+              <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>✏️</div>
+              <h3 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '0.75rem' }}>Non-Calculator</h3>
+              <p style={{ opacity: 0.9 }}>Mental maths</p>
+            </button>
+
+            <button
+              onClick={() => {
+                setMode('calculator');
+                setScreen('stage');
+              }}
+              style={{ backgroundColor: '#3b82f6', color: 'white', borderRadius: '0.75rem', padding: '2rem', boxShadow: '0 4px 6px rgba(0,0,0,0.1)', border: 'none', cursor: 'pointer' }}
+            >
+              <Calculator style={{ width: '4rem', height: '4rem', margin: '0 auto 1rem' }} />
+              <h3 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '0.75rem' }}>Calculator</h3>
+              <p style={{ opacity: 0.9 }}>Complex numbers</p>
+            </button>
+          </div>
+        </div>
+      </div>
     );
   }
 
+  // STAGE SCREEN
   if (screen === 'stage') {
-    return React.createElement('div', { className: "min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4" },
-      React.createElement('div', { className: "max-w-3xl mx-auto" },
-        React.createElement('button', { onClick: () => setScreen('mode'), className: "mb-4 text-gray-600 hover:text-gray-800 bg-white px-4 py-2 rounded-lg" }, '← Back'),
-        React.createElement('div', { className: "bg-white rounded-2xl shadow-xl p-8 mb-6" },
-          React.createElement('h2', { className: "text-2xl font-bold" }, topics[topic].name)
-        ),
-        React.createElement('div', { className: "space-y-4" },
-          React.createElement('button', {
-            onClick: () => { setStage('keywords'); setQuestionIndex(0); reset(); setScore({ correct: 0, total: 0 }); setScreen('practice'); },
-            className: "w-full bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all text-left"
-          },
-            React.createElement('div', { className: "flex items-center gap-4" },
-              React.createElement('div', { className: "text-4xl" }, '🔍'),
-              React.createElement('h3', { className: "text-xl font-bold" }, 'Keyword Recognition')
-            )
-          ),
-          React.createElement('button', {
-            onClick: () => { setStage('practice'); setQuestionIndex(0); reset(); setScore({ correct: 0, total: 0 }); setScreen('practice'); },
-            className: "w-full bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all text-left"
-          },
-            React.createElement('div', { className: "flex items-center gap-4" },
-              React.createElement('div', { className: "text-4xl" }, '📝'),
-              React.createElement('h3', { className: "text-xl font-bold" }, 'Calculation Practice')
-            )
-          )
-        )
-      )
+    return (
+      <div style={{ minHeight: '100vh', background: 'linear-gradient(to bottom right, #eff6ff, #e0e7ff)', padding: '1rem' }}>
+        <div style={{ maxWidth: '48rem', margin: '0 auto' }}>
+          <button 
+            onClick={() => setScreen('mode')}
+            style={{ marginBottom: '1rem', color: '#4b5563', background: 'white', padding: '0.5rem 1rem', borderRadius: '0.5rem', border: 'none', cursor: 'pointer' }}
+          >
+            ← Back
+          </button>
+
+          <div style={{ background: 'white', borderRadius: '1rem', boxShadow: '0 10px 25px rgba(0,0,0,0.1)', padding: '2rem', marginBottom: '1.5rem' }}>
+            <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '0.5rem' }}>{topics[topic].name} Practice</h2>
+            <p style={{ color: '#6b7280' }}>{mode === 'calculator' ? 'Calculator' : 'Non-Calculator'} Mode</p>
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <button
+              onClick={() => {
+                setStage('keywords');
+                setQuestionIndex(0);
+                reset();
+                setScore({ correct: 0, total: 0 });
+                setScreen('practice');
+              }}
+              style={{ background: 'white', borderRadius: '0.75rem', padding: '1.5rem', boxShadow: '0 4px 6px rgba(0,0,0,0.1)', border: 'none', cursor: 'pointer', textAlign: 'left', display: 'flex', alignItems: 'center', gap: '1rem' }}
+            >
+              <div style={{ fontSize: '2.5rem' }}>🔍</div>
+              <div>
+                <h3 style={{ fontSize: '1.25rem', fontWeight: 'bold', marginBottom: '0.25rem' }}>Keyword Recognition</h3>
+                <p style={{ color: '#6b7280' }}>Learn to identify when to use {topics[topic].name.toLowerCase()}</p>
+              </div>
+            </button>
+
+            <button
+              onClick={() => {
+                setStage('practice');
+                setQuestionIndex(0);
+                reset();
+                setScore({ correct: 0, total: 0 });
+                setScreen('practice');
+              }}
+              style={{ background: 'white', borderRadius: '0.75rem', padding: '1.5rem', boxShadow: '0 4px 6px rgba(0,0,0,0.1)', border: 'none', cursor: 'pointer', textAlign: 'left', display: 'flex', alignItems: 'center', gap: '1rem' }}
+            >
+              <div style={{ fontSize: '2.5rem' }}>📝</div>
+              <div>
+                <h3 style={{ fontSize: '1.25rem', fontWeight: 'bold', marginBottom: '0.25rem' }}>Calculation Practice</h3>
+                <p style={{ color: '#6b7280' }}>Solve {topics[topic].name.toLowerCase()} questions</p>
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
     );
   }
 
+  // PRACTICE SCREEN
   if (screen === 'practice') {
     const questions = stage === 'keywords' ? keywordQuestions[topic] : practiceQuestions[topic][mode];
     
     if (questionIndex >= questions.length) {
       const pct = Math.round((score.correct / score.total) * 100);
-      return React.createElement('div', { className: "min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4" },
-        React.createElement('div', { className: "max-w-2xl mx-auto" },
-          React.createElement('div', { className: "bg-white rounded-2xl shadow-xl p-8 text-center" },
-            React.createElement(Award, { className: "w-24 h-24 mx-auto mb-4 text-yellow-500" }),
-            React.createElement('h2', { className: "text-3xl font-bold mb-4" }, 'Complete!'),
-            React.createElement('div', { className: "text-white rounded-xl p-6 mb-6", style: { backgroundColor: topics[topic].color } },
-              React.createElement('p', { className: "text-5xl font-bold" }, score.correct + '/' + score.total),
-              React.createElement('p', { className: "text-2xl mt-2" }, pct + '%')
-            ),
-            React.createElement('div', { className: "space-y-3" },
-              React.createElement('button', {
-                onClick: () => { setQuestionIndex(0); reset(); setScore({ correct: 0, total: 0 }); },
-                className: "w-full text-white py-3 rounded-lg font-semibold",
-                style: { backgroundColor: topics[topic].color }
-              }, 'Practice Again'),
-              React.createElement('button', { onClick: () => setScreen('home'), className: "w-full bg-gray-200 py-3 rounded-lg font-semibold" }, 'Home')
-            )
-          )
-        )
+      return (
+        <div style={{ minHeight: '100vh', background: 'linear-gradient(to bottom right, #eff6ff, #e0e7ff)', padding: '1rem' }}>
+          <div style={{ maxWidth: '32rem', margin: '0 auto' }}>
+            <div style={{ background: 'white', borderRadius: '1rem', boxShadow: '0 10px 25px rgba(0,0,0,0.1)', padding: '2rem', textAlign: 'center' }}>
+              <Award style={{ width: '6rem', height: '6rem', margin: '0 auto 1rem', color: '#eab308' }} />
+              <h2 style={{ fontSize: '1.875rem', fontWeight: 'bold', marginBottom: '1rem' }}>Complete!</h2>
+              <div style={{ backgroundColor: topics[topic].color, color: 'white', borderRadius: '0.75rem', padding: '1.5rem', marginBottom: '1.5rem' }}>
+                <p style={{ fontSize: '3rem', fontWeight: 'bold' }}>{score.correct}/{score.total}</p>
+                <p style={{ fontSize: '1.5rem', marginTop: '0.5rem' }}>{pct}%</p>
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                <button
+                  onClick={() => {
+                    setQuestionIndex(0);
+                    reset();
+                    setScore({ correct: 0, total: 0 });
+                  }}
+                  style={{ backgroundColor: topics[topic].color, color: 'white', padding: '0.75rem', borderRadius: '0.5rem', fontWeight: '600', border: 'none', cursor: 'pointer' }}
+                >
+                  Practice Again
+                </button>
+                <button
+                  onClick={() => setScreen('home')}
+                  style={{ backgroundColor: '#e5e7eb', color: '#1f2937', padding: '0.75rem', borderRadius: '0.5rem', fontWeight: '600', border: 'none', cursor: 'pointer' }}
+                >
+                  Home
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       );
     }
 
     const q = questions[questionIndex];
 
+    // KEYWORD QUESTIONS
     if (stage === 'keywords') {
-      return React.createElement('div', { className: "min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4" },
-        React.createElement('div', { className: "max-w-2xl mx-auto" },
-          React.createElement('div', { className: "bg-white rounded-2xl shadow-xl p-8" },
-            React.createElement('div', { className: "bg-blue-50 border-2 border-blue-200 rounded-lg p-6 mb-6" },
-              React.createElement('p', { className: "text-lg" }, q.text)
-            ),
-            React.createElement('p', { className: "text-xl font-semibold text-center mb-6" }, 'Is this Area, Perimeter, or Volume?'),
-            !showFeedback ?
-              React.createElement('div', { className: "grid grid-cols-3 gap-4" },
-                ['perimeter', 'area', 'volume'].map(type =>
-                  React.createElement('button', {
-                    key: type,
-                    onClick: () => {
-                      const correct = type === q.answer;
-                      setScore(prev => ({ correct: prev.correct + (correct ? 1 : 0), total: prev.total + 1 }));
-                      setShowFeedback(correct ? 'correct' : 'wrong');
-                    },
-                    className: "text-white py-6 rounded-xl font-bold",
-                    style: { backgroundColor: topics[type].color }
-                  }, topics[type].name)
-                )
-              ) :
-              React.createElement('div', null,
-                React.createElement('div', { className: showFeedback === 'correct' ? 'bg-green-50 p-6 rounded-lg mb-6' : 'bg-red-50 p-6 rounded-lg mb-6' },
-                  React.createElement('p', { className: showFeedback === 'correct' ? 'text-green-800' : 'text-red-800' }, q.explanation)
-                ),
-                React.createElement('button', {
-                  onClick: () => { setQuestionIndex(questionIndex + 1); reset(); },
-                  className: "w-full text-white py-4 rounded-lg font-bold",
-                  style: { backgroundColor: topics[topic].color }
-                }, 'Next →')
-              )
-          )
-        )
+      return (
+        <div style={{ minHeight: '100vh', background: 'linear-gradient(to bottom right, #eff6ff, #e0e7ff)', padding: '1rem' }}>
+          <div style={{ maxWidth: '32rem', margin: '0 auto' }}>
+            <div style={{ background: 'white', borderRadius: '1rem', boxShadow: '0 10px 25px rgba(0,0,0,0.1)', padding: '2rem' }}>
+              <div style={{ background: '#eff6ff', border: '2px solid #bfdbfe', borderRadius: '0.5rem', padding: '1.5rem', marginBottom: '1.5rem' }}>
+                <p style={{ fontSize: '1.125rem' }}>{q.text}</p>
+              </div>
+
+              <p style={{ fontSize: '1.25rem', fontWeight: '600', textAlign: 'center', marginBottom: '1.5rem' }}>
+                Is this Area, Perimeter, or Volume?
+              </p>
+
+              {!showFeedback ? (
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem' }}>
+                  {['perimeter', 'area', 'volume'].map(type => (
+                    <button
+                      key={type}
+                      onClick={() => {
+                        const correct = type === q.answer;
+                        setScore(prev => ({ correct: prev.correct + (correct ? 1 : 0), total: prev.total + 1 }));
+                        setShowFeedback(correct ? 'correct' : 'wrong');
+                      }}
+                      style={{ backgroundColor: topics[type].color, color: 'white', padding: '1.5rem', borderRadius: '0.75rem', fontWeight: 'bold', border: 'none', cursor: 'pointer' }}
+                    >
+                      {topics[type].name}
+                    </button>
+                  ))}
+                </div>
+              ) : (
+                <div>
+                  <div style={{ 
+                    background: showFeedback === 'correct' ? '#f0fdf4' : '#fef2f2',
+                    padding: '1.5rem',
+                    borderRadius: '0.5rem',
+                    marginBottom: '1.5rem'
+                  }}>
+                    <p style={{ color: showFeedback === 'correct' ? '#166534' : '#991b1b' }}>{q.explanation}</p>
+                  </div>
+                  <button
+                    onClick={() => {
+                      setQuestionIndex(questionIndex + 1);
+                      reset();
+                    }}
+                    style={{ backgroundColor: topics[topic].color, color: 'white', width: '100%', padding: '1rem', borderRadius: '0.5rem', fontWeight: 'bold', border: 'none', cursor: 'pointer' }}
+                  >
+                    Next →
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
       );
     }
 
-    return React.createElement('div', { className: "min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4" },
-      React.createElement('div', { className: "max-w-3xl mx-auto" },
-        React.createElement('div', { className: "bg-white rounded-2xl shadow-xl p-8" },
-          React.createElement('div', { className: "bg-blue-50 p-6 rounded-lg mb-6" },
-            React.createElement('p', { className: "text-lg font-bold" }, q.q)
-          ),
-          !showFeedback ?
-            React.createElement('div', null,
-              React.createElement('div', { className: "mb-4" },
-                React.createElement('input', {
-                  type: "number",
-                  value: answer,
-                  onChange: (e) => setAnswer(e.target.value),
-                  className: "w-full px-4 py-3 border-2 rounded-lg text-lg",
-                  placeholder: "Answer"
-                })
-              ),
-              showHint && React.createElement('div', { className: "bg-yellow-50 p-4 rounded-lg mb-4" },
-                React.createElement('p', { className: "text-yellow-900" }, 'Hint: ' + q.h)
-              ),
-              React.createElement('div', { className: "flex gap-3" },
-                React.createElement('button', {
-                  onClick: () => setShowHint(true),
-                  className: "flex-1 bg-yellow-500 text-white py-3 rounded-lg font-semibold"
-                }, 'Hint'),
-                React.createElement('button', {
-                  onClick: () => {
-                    const correct = parseFloat(answer) === parseFloat(q.ans);
-                    setScore(prev => ({ correct: prev.correct + (correct ? 1 : 0), total: prev.total + 1 }));
-                    setShowFeedback(true);
-                  },
-                  disabled: !answer,
-                  className: "flex-1 text-white py-3 rounded-lg font-semibold",
-                  style: { backgroundColor: topics[topic].color }
-                }, 'Check')
-              )
-            ) :
-            React.createElement('div', null,
-              React.createElement('div', { className: parseFloat(answer) === parseFloat(q.ans) ? 'bg-green-50 p-6 rounded-lg mb-6' : 'bg-red-50 p-6 rounded-lg mb-6' },
-                parseFloat(answer) === parseFloat(q.ans) ?
-                  React.createElement('div', null,
-                    React.createElement('p', { className: "text-2xl font-bold text-green-900 mb-3" }, '✓ Correct!'),
-                    React.createElement('p', { className: "text-green-800" }, q.w[0])
-                  ) :
-                  React.createElement('div', null,
-                    React.createElement('p', { className: "text-2xl font-bold text-red-900 mb-3" }, '✗ Not quite'),
-                    React.createElement('p', { className: "text-red-800 mb-2" }, 'Answer: ' + q.ans + q.u),
-                    React.createElement('p', { className: "text-red-800" }, q.w[0])
-                  )
-              ),
-              React.createElement('button', {
-                onClick: () => { setQuestionIndex(questionIndex + 1); reset(); },
-                className: "w-full text-white py-4 rounded-lg font-semibold",
-                style: { backgroundColor: topics[topic].color }
-              }, 'Next →')
-            )
-        )
-      )
+    // CALCULATION QUESTIONS
+    return (
+      <div style={{ minHeight: '100vh', background: 'linear-gradient(to bottom right, #eff6ff, #e0e7ff)', padding: '1rem' }}>
+        <div style={{ maxWidth: '48rem', margin: '0 auto' }}>
+          <div style={{ background: 'white', borderRadius: '1rem', boxShadow: '0 10px 25px rgba(0,0,0,0.1)', padding: '2rem' }}>
+            <div style={{ background: '#eff6ff', padding: '1.5rem', borderRadius: '0.5rem', marginBottom: '1.5rem' }}>
+              <p style={{ fontSize: '1.125rem', fontWeight: 'bold' }}>{q.q}</p>
+            </div>
+
+            {!showFeedback ? (
+              <div>
+                <div style={{ marginBottom: '1rem' }}>
+                  <input
+                    type="number"
+                    value={answer}
+                    onChange={(e) => setAnswer(e.target.value)}
+                    style={{ width: '100%', padding: '0.75rem 1rem', border: '2px solid #d1d5db', borderRadius: '0.5rem', fontSize: '1.125rem' }}
+                    placeholder="Your answer"
+                  />
+                </div>
+
+                {showHint && (
+                  <div style={{ background: '#fefce8', padding: '1rem', borderRadius: '0.5rem', marginBottom: '1rem' }}>
+                    <p style={{ color: '#854d0e' }}>Hint: {q.h}</p>
+                  </div>
+                )}
+
+                <div style={{ display: 'flex', gap: '0.75rem' }}>
+                  <button
+                    onClick={() => setShowHint(true)}
+                    style={{ flex: 1, backgroundColor: '#eab308', color: 'white', padding: '0.75rem', borderRadius: '0.5rem', fontWeight: '600', border: 'none', cursor: 'pointer' }}
+                  >
+                    Hint
+                  </button>
+                  <button
+                    onClick={() => {
+                      const correct = parseFloat(answer) === parseFloat(q.ans);
+                      setScore(prev => ({ correct: prev.correct + (correct ? 1 : 0), total: prev.total + 1 }));
+                      setShowFeedback(true);
+                    }}
+                    disabled={!answer}
+                    style={{ flex: 1, backgroundColor: topics[topic].color, color: 'white', padding: '0.75rem', borderRadius: '0.5rem', fontWeight: '600', border: 'none', cursor: answer ? 'pointer' : 'not-allowed', opacity: answer ? 1 : 0.5 }}
+                  >
+                    Check
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div>
+                <div style={{
+                  background: parseFloat(answer) === parseFloat(q.ans) ? '#f0fdf4' : '#fef2f2',
+                  padding: '1.5rem',
+                  borderRadius: '0.5rem',
+                  marginBottom: '1.5rem'
+                }}>
+                  {parseFloat(answer) === parseFloat(q.ans) ? (
+                    <div>
+                      <p style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#166534', marginBottom: '0.75rem' }}>✓ Correct!</p>
+                      <p style={{ color: '#166534' }}>{q.w[0]}</p>
+                    </div>
+                  ) : (
+                    <div>
+                      <p style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#991b1b', marginBottom: '0.75rem' }}>✗ Not quite</p>
+                      <p style={{ color: '#991b1b', marginBottom: '0.5rem' }}>Answer: {q.ans}{q.u}</p>
+                      <p style={{ color: '#991b1b' }}>{q.w[0]}</p>
+                    </div>
+                  )}
+                </div>
+                <button
+                  onClick={() => {
+                    setQuestionIndex(questionIndex + 1);
+                    reset();
+                  }}
+                  style={{ backgroundColor: topics[topic].color, color: 'white', width: '100%', padding: '1rem', borderRadius: '0.5rem', fontWeight: 'bold', border: 'none', cursor: 'pointer' }}
+                >
+                  Next →
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
     );
   }
 

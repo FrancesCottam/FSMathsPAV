@@ -1,5 +1,4 @@
 const { useState } = React;
-const { Calculator, CheckCircle, XCircle, Lightbulb, RotateCcw, Home, Award } = lucide;
 
 const App = () => {
   const [screen, setScreen] = useState('home');
@@ -11,8 +10,6 @@ const App = () => {
   const [showHint, setShowHint] = useState(false);
   const [showFeedback, setShowFeedback] = useState(false);
   const [score, setScore] = useState({ correct: 0, total: 0 });
-
-  console.log('Screen:', screen, 'Topic:', topic, 'Mode:', mode, 'Stage:', stage);
 
   const topics = {
     perimeter: { name: 'Perimeter', color: '#3b82f6', icon: '📏', formula: '2 × (length + width)' },
@@ -42,20 +39,20 @@ const App = () => {
     perimeter: {
       calculator: [
         { q: 'Garden 12.5m × 8.3m. Perimeter?', ans: '41.6', u: 'm', w: ['P = 2 × (12.5 + 8.3) = 41.6m'], h: '2 × (length + width)' },
-        { q: 'Pool 25.5m × 12.8m. Perimeter?', ans: '76.6', u: 'm', w: ['P = 2 × (25.5 + 12.8) = 76.6m'], h: 'Add length + width, × 2' }
+        { q: 'Pool 25.5m × 12.8m. Perimeter?', ans: '76.6', u: 'm', w: ['P = 2 × (25.5 + 12.8) = 76.6m'], h: 'Add L + W, × 2' }
       ],
       nonCalculator: [
-        { q: 'Field 45m × 30m. Perimeter?', ans: '150', u: 'm', w: ['P = 45+30+45+30 = 150m'], h: 'Add all four sides' },
+        { q: 'Field 45m × 30m. Perimeter?', ans: '150', u: 'm', w: ['P = 45+30+45+30 = 150m'], h: 'Add all sides' },
         { q: 'Lawn 20m × 15m. Perimeter?', ans: '70', u: 'm', w: ['P = 20+15+20+15 = 70m'], h: 'Add all sides' }
       ]
     },
     area: {
       calculator: [
-        { q: 'Room 5.6m × 3.8m. Area?', ans: '21.28', u: 'm²', w: ['A = 5.6 × 3.8 = 21.28m²'], h: 'Length × width' },
-        { q: 'Kitchen 4.2m × 3.5m. Area?', ans: '14.7', u: 'm²', w: ['A = 4.2 × 3.5 = 14.7m²'], h: 'Length × width' }
+        { q: 'Room 5.6m × 3.8m. Area?', ans: '21.28', u: 'm²', w: ['A = 5.6 × 3.8 = 21.28m²'], h: 'L × W' },
+        { q: 'Kitchen 4.2m × 3.5m. Area?', ans: '14.7', u: 'm²', w: ['A = 4.2 × 3.5 = 14.7m²'], h: 'L × W' }
       ],
       nonCalculator: [
-        { q: 'Carpet 8m × 6m. Area?', ans: '48', u: 'm²', w: ['A = 8 × 6 = 48m²'], h: 'Length × width' },
+        { q: 'Carpet 8m × 6m. Area?', ans: '48', u: 'm²', w: ['A = 8 × 6 = 48m²'], h: 'L × W' },
         { q: 'Patio 12m × 9m. Area?', ans: '108', u: 'm²', w: ['A = 12 × 9 = 108m²'], h: 'Multiply' }
       ]
     },
@@ -73,7 +70,6 @@ const App = () => {
 
   const reset = () => { setAnswer(''); setShowHint(false); setShowFeedback(false); };
 
-  // HOME SCREEN
   if (screen === 'home') {
     return (
       <div style={{ minHeight: '100vh', background: 'linear-gradient(to bottom right, #eff6ff, #e0e7ff)', padding: '1rem' }}>
@@ -88,11 +84,7 @@ const App = () => {
             {Object.keys(topics).map(key => (
               <button
                 key={key}
-                onClick={() => {
-                  console.log('Clicked:', key);
-                  setTopic(key);
-                  setScreen('mode');
-                }}
+                onClick={() => { setTopic(key); setScreen('mode'); }}
                 style={{
                   backgroundColor: topics[key].color,
                   color: 'white',
@@ -104,8 +96,6 @@ const App = () => {
                   transition: 'transform 0.2s',
                   textAlign: 'center'
                 }}
-                onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
-                onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
               >
                 <div style={{ fontSize: '3.75rem', marginBottom: '1rem' }}>{topics[key].icon}</div>
                 <h3 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '0.5rem' }}>{topics[key].name}</h3>
@@ -121,16 +111,12 @@ const App = () => {
     );
   }
 
-  // MODE SCREEN
   if (screen === 'mode') {
     return (
       <div style={{ minHeight: '100vh', background: 'linear-gradient(to bottom right, #eff6ff, #e0e7ff)', padding: '1rem' }}>
         <div style={{ maxWidth: '48rem', margin: '0 auto' }}>
-          <button 
-            onClick={() => setScreen('home')}
-            style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#4b5563', background: 'white', padding: '0.5rem 1rem', borderRadius: '0.5rem', border: 'none', cursor: 'pointer' }}
-          >
-            <Home size={20} /> Back
+          <button onClick={() => setScreen('home')} style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#4b5563', background: 'white', padding: '0.5rem 1rem', borderRadius: '0.5rem', border: 'none', cursor: 'pointer' }}>
+            🏠 Back
           </button>
 
           <div style={{ background: 'white', borderRadius: '1rem', boxShadow: '0 10px 25px rgba(0,0,0,0.1)', padding: '2rem', marginBottom: '1.5rem', textAlign: 'center' }}>
@@ -141,27 +127,19 @@ const App = () => {
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem' }}>
             <button
-              onClick={() => {
-                setMode('nonCalculator');
-                setScreen('stage');
-              }}
+              onClick={() => { setMode('nonCalculator'); setScreen('stage'); }}
               style={{ backgroundColor: '#f97316', color: 'white', borderRadius: '0.75rem', padding: '2rem', boxShadow: '0 4px 6px rgba(0,0,0,0.1)', border: 'none', cursor: 'pointer' }}
             >
               <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>✏️</div>
               <h3 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '0.75rem' }}>Non-Calculator</h3>
-              <p style={{ opacity: 0.9 }}>Mental maths</p>
             </button>
 
             <button
-              onClick={() => {
-                setMode('calculator');
-                setScreen('stage');
-              }}
+              onClick={() => { setMode('calculator'); setScreen('stage'); }}
               style={{ backgroundColor: '#3b82f6', color: 'white', borderRadius: '0.75rem', padding: '2rem', boxShadow: '0 4px 6px rgba(0,0,0,0.1)', border: 'none', cursor: 'pointer' }}
             >
-              <Calculator style={{ width: '4rem', height: '4rem', margin: '0 auto 1rem' }} />
+              <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🔢</div>
               <h3 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '0.75rem' }}>Calculator</h3>
-              <p style={{ opacity: 0.9 }}>Complex numbers</p>
             </button>
           </div>
         </div>
@@ -169,15 +147,11 @@ const App = () => {
     );
   }
 
-  // STAGE SCREEN
   if (screen === 'stage') {
     return (
       <div style={{ minHeight: '100vh', background: 'linear-gradient(to bottom right, #eff6ff, #e0e7ff)', padding: '1rem' }}>
         <div style={{ maxWidth: '48rem', margin: '0 auto' }}>
-          <button 
-            onClick={() => setScreen('mode')}
-            style={{ marginBottom: '1rem', color: '#4b5563', background: 'white', padding: '0.5rem 1rem', borderRadius: '0.5rem', border: 'none', cursor: 'pointer' }}
-          >
+          <button onClick={() => setScreen('mode')} style={{ marginBottom: '1rem', color: '#4b5563', background: 'white', padding: '0.5rem 1rem', borderRadius: '0.5rem', border: 'none', cursor: 'pointer' }}>
             ← Back
           </button>
 
@@ -188,13 +162,7 @@ const App = () => {
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             <button
-              onClick={() => {
-                setStage('keywords');
-                setQuestionIndex(0);
-                reset();
-                setScore({ correct: 0, total: 0 });
-                setScreen('practice');
-              }}
+              onClick={() => { setStage('keywords'); setQuestionIndex(0); reset(); setScore({ correct: 0, total: 0 }); setScreen('practice'); }}
               style={{ background: 'white', borderRadius: '0.75rem', padding: '1.5rem', boxShadow: '0 4px 6px rgba(0,0,0,0.1)', border: 'none', cursor: 'pointer', textAlign: 'left', display: 'flex', alignItems: 'center', gap: '1rem' }}
             >
               <div style={{ fontSize: '2.5rem' }}>🔍</div>
@@ -205,13 +173,7 @@ const App = () => {
             </button>
 
             <button
-              onClick={() => {
-                setStage('practice');
-                setQuestionIndex(0);
-                reset();
-                setScore({ correct: 0, total: 0 });
-                setScreen('practice');
-              }}
+              onClick={() => { setStage('practice'); setQuestionIndex(0); reset(); setScore({ correct: 0, total: 0 }); setScreen('practice'); }}
               style={{ background: 'white', borderRadius: '0.75rem', padding: '1.5rem', boxShadow: '0 4px 6px rgba(0,0,0,0.1)', border: 'none', cursor: 'pointer', textAlign: 'left', display: 'flex', alignItems: 'center', gap: '1rem' }}
             >
               <div style={{ fontSize: '2.5rem' }}>📝</div>
@@ -226,7 +188,6 @@ const App = () => {
     );
   }
 
-  // PRACTICE SCREEN
   if (screen === 'practice') {
     const questions = stage === 'keywords' ? keywordQuestions[topic] : practiceQuestions[topic][mode];
     
@@ -236,28 +197,18 @@ const App = () => {
         <div style={{ minHeight: '100vh', background: 'linear-gradient(to bottom right, #eff6ff, #e0e7ff)', padding: '1rem' }}>
           <div style={{ maxWidth: '32rem', margin: '0 auto' }}>
             <div style={{ background: 'white', borderRadius: '1rem', boxShadow: '0 10px 25px rgba(0,0,0,0.1)', padding: '2rem', textAlign: 'center' }}>
-              <Award style={{ width: '6rem', height: '6rem', margin: '0 auto 1rem', color: '#eab308' }} />
+              <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>🏆</div>
               <h2 style={{ fontSize: '1.875rem', fontWeight: 'bold', marginBottom: '1rem' }}>Complete!</h2>
               <div style={{ backgroundColor: topics[topic].color, color: 'white', borderRadius: '0.75rem', padding: '1.5rem', marginBottom: '1.5rem' }}>
                 <p style={{ fontSize: '3rem', fontWeight: 'bold' }}>{score.correct}/{score.total}</p>
                 <p style={{ fontSize: '1.5rem', marginTop: '0.5rem' }}>{pct}%</p>
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                <button
-                  onClick={() => {
-                    setQuestionIndex(0);
-                    reset();
-                    setScore({ correct: 0, total: 0 });
-                  }}
-                  style={{ backgroundColor: topics[topic].color, color: 'white', padding: '0.75rem', borderRadius: '0.5rem', fontWeight: '600', border: 'none', cursor: 'pointer' }}
-                >
-                  Practice Again
+                <button onClick={() => { setQuestionIndex(0); reset(); setScore({ correct: 0, total: 0 }); }} style={{ backgroundColor: topics[topic].color, color: 'white', padding: '0.75rem', borderRadius: '0.5rem', fontWeight: '600', border: 'none', cursor: 'pointer' }}>
+                  🔄 Practice Again
                 </button>
-                <button
-                  onClick={() => setScreen('home')}
-                  style={{ backgroundColor: '#e5e7eb', color: '#1f2937', padding: '0.75rem', borderRadius: '0.5rem', fontWeight: '600', border: 'none', cursor: 'pointer' }}
-                >
-                  Home
+                <button onClick={() => setScreen('home')} style={{ backgroundColor: '#e5e7eb', color: '#1f2937', padding: '0.75rem', borderRadius: '0.5rem', fontWeight: '600', border: 'none', cursor: 'pointer' }}>
+                  🏠 Home
                 </button>
               </div>
             </div>
@@ -268,7 +219,6 @@ const App = () => {
 
     const q = questions[questionIndex];
 
-    // KEYWORD QUESTIONS
     if (stage === 'keywords') {
       return (
         <div style={{ minHeight: '100vh', background: 'linear-gradient(to bottom right, #eff6ff, #e0e7ff)', padding: '1rem' }}>
@@ -292,7 +242,7 @@ const App = () => {
                         setScore(prev => ({ correct: prev.correct + (correct ? 1 : 0), total: prev.total + 1 }));
                         setShowFeedback(correct ? 'correct' : 'wrong');
                       }}
-                      style={{ backgroundColor: topics[type].color, color: 'white', padding: '1.5rem', borderRadius: '0.75rem', fontWeight: 'bold', border: 'none', cursor: 'pointer' }}
+                      style={{ backgroundColor: topics[type].color, color: 'white', padding: '1.5rem 0.5rem', borderRadius: '0.75rem', fontWeight: 'bold', border: 'none', cursor: 'pointer', fontSize: '0.9rem' }}
                     >
                       {topics[type].name}
                     </button>
@@ -300,21 +250,13 @@ const App = () => {
                 </div>
               ) : (
                 <div>
-                  <div style={{ 
-                    background: showFeedback === 'correct' ? '#f0fdf4' : '#fef2f2',
-                    padding: '1.5rem',
-                    borderRadius: '0.5rem',
-                    marginBottom: '1.5rem'
-                  }}>
+                  <div style={{ background: showFeedback === 'correct' ? '#f0fdf4' : '#fef2f2', padding: '1.5rem', borderRadius: '0.5rem', marginBottom: '1.5rem' }}>
+                    <p style={{ fontSize: '1.25rem', fontWeight: 'bold', marginBottom: '0.5rem' }}>
+                      {showFeedback === 'correct' ? '✓ Correct!' : '✗ Not quite'}
+                    </p>
                     <p style={{ color: showFeedback === 'correct' ? '#166534' : '#991b1b' }}>{q.explanation}</p>
                   </div>
-                  <button
-                    onClick={() => {
-                      setQuestionIndex(questionIndex + 1);
-                      reset();
-                    }}
-                    style={{ backgroundColor: topics[topic].color, color: 'white', width: '100%', padding: '1rem', borderRadius: '0.5rem', fontWeight: 'bold', border: 'none', cursor: 'pointer' }}
-                  >
+                  <button onClick={() => { setQuestionIndex(questionIndex + 1); reset(); }} style={{ backgroundColor: topics[topic].color, color: 'white', width: '100%', padding: '1rem', borderRadius: '0.5rem', fontWeight: 'bold', border: 'none', cursor: 'pointer' }}>
                     Next →
                   </button>
                 </div>
@@ -325,7 +267,6 @@ const App = () => {
       );
     }
 
-    // CALCULATION QUESTIONS
     return (
       <div style={{ minHeight: '100vh', background: 'linear-gradient(to bottom right, #eff6ff, #e0e7ff)', padding: '1rem' }}>
         <div style={{ maxWidth: '48rem', margin: '0 auto' }}>
@@ -348,16 +289,13 @@ const App = () => {
 
                 {showHint && (
                   <div style={{ background: '#fefce8', padding: '1rem', borderRadius: '0.5rem', marginBottom: '1rem' }}>
-                    <p style={{ color: '#854d0e' }}>Hint: {q.h}</p>
+                    <p style={{ color: '#854d0e' }}>💡 Hint: {q.h}</p>
                   </div>
                 )}
 
                 <div style={{ display: 'flex', gap: '0.75rem' }}>
-                  <button
-                    onClick={() => setShowHint(true)}
-                    style={{ flex: 1, backgroundColor: '#eab308', color: 'white', padding: '0.75rem', borderRadius: '0.5rem', fontWeight: '600', border: 'none', cursor: 'pointer' }}
-                  >
-                    Hint
+                  <button onClick={() => setShowHint(true)} style={{ flex: 1, backgroundColor: '#eab308', color: 'white', padding: '0.75rem', borderRadius: '0.5rem', fontWeight: '600', border: 'none', cursor: 'pointer' }}>
+                    💡 Hint
                   </button>
                   <button
                     onClick={() => {
@@ -368,18 +306,13 @@ const App = () => {
                     disabled={!answer}
                     style={{ flex: 1, backgroundColor: topics[topic].color, color: 'white', padding: '0.75rem', borderRadius: '0.5rem', fontWeight: '600', border: 'none', cursor: answer ? 'pointer' : 'not-allowed', opacity: answer ? 1 : 0.5 }}
                   >
-                    Check
+                    ✓ Check
                   </button>
                 </div>
               </div>
             ) : (
               <div>
-                <div style={{
-                  background: parseFloat(answer) === parseFloat(q.ans) ? '#f0fdf4' : '#fef2f2',
-                  padding: '1.5rem',
-                  borderRadius: '0.5rem',
-                  marginBottom: '1.5rem'
-                }}>
+                <div style={{ background: parseFloat(answer) === parseFloat(q.ans) ? '#f0fdf4' : '#fef2f2', padding: '1.5rem', borderRadius: '0.5rem', marginBottom: '1.5rem' }}>
                   {parseFloat(answer) === parseFloat(q.ans) ? (
                     <div>
                       <p style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#166534', marginBottom: '0.75rem' }}>✓ Correct!</p>
@@ -393,13 +326,7 @@ const App = () => {
                     </div>
                   )}
                 </div>
-                <button
-                  onClick={() => {
-                    setQuestionIndex(questionIndex + 1);
-                    reset();
-                  }}
-                  style={{ backgroundColor: topics[topic].color, color: 'white', width: '100%', padding: '1rem', borderRadius: '0.5rem', fontWeight: 'bold', border: 'none', cursor: 'pointer' }}
-                >
+                <button onClick={() => { setQuestionIndex(questionIndex + 1); reset(); }} style={{ backgroundColor: topics[topic].color, color: 'white', width: '100%', padding: '1rem', borderRadius: '0.5rem', fontWeight: 'bold', border: 'none', cursor: 'pointer' }}>
                   Next →
                 </button>
               </div>

@@ -282,7 +282,11 @@ const App = () => {
               
               <div className="space-y-3">
                 <button onClick={() => { setQuestionIndex(0); resetQuestion(); setScore({ correct: 0, total: 0 }); }}
-                  className={`w-full bg-${topics[topic].color}-500 text-white py-3 rounded-lg font-semibold flex items-center justify-center gap-2`}>
+                 className={
+  key === 'perimeter' ? 'bg-blue-500 text-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all transform hover:scale-105' :
+  key === 'area' ? 'bg-green-500 text-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all transform hover:scale-105' :
+  'bg-purple-500 text-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all transform hover:scale-105'
+}
                   <RotateCcw size={20} /> Practice Again
                 </button>
                 <button onClick={() => setScreen('stage')} className="w-full bg-gray-200 text-gray-800 py-3 rounded-lg font-semibold">
@@ -331,7 +335,11 @@ const App = () => {
                         setScore(prev => ({ correct: prev.correct + (correct ? 1 : 0), total: prev.total + 1 }));
                         setShowFeedback(correct ? 'correct' : 'wrong');
                       }}
-                      className={`bg-${topics[type].color}-500 text-white py-6 rounded-xl font-bold text-lg hover:opacity-90 transition-all`}>
+                     className={
+  key === 'perimeter' ? 'bg-blue-500 text-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all transform hover:scale-105' :
+  key === 'area' ? 'bg-green-500 text-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all transform hover:scale-105' :
+  'bg-purple-500 text-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all transform hover:scale-105'
+}
                       <div className="text-3xl mb-2">{topics[type].icon}</div>
                       {topics[type].name}
                     </button>
@@ -351,7 +359,11 @@ const App = () => {
                   </div>
                   
                   <button onClick={() => { setQuestionIndex(questionIndex + 1); resetQuestion(); }}
-                    className={`w-full bg-${topics[topic].color}-500 text-white py-4 rounded-lg font-bold text-lg`}>
+                   className={
+  key === 'perimeter' ? 'bg-blue-500 text-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all transform hover:scale-105' :
+  key === 'area' ? 'bg-green-500 text-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all transform hover:scale-105' :
+  'bg-purple-500 text-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all transform hover:scale-105'
+}
                     Next Question →
                   </button>
                 </div>

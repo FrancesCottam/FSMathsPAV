@@ -260,11 +260,7 @@ const App = () => {
             <div className="bg-white rounded-2xl shadow-xl p-8 text-center">
               <Award className="w-24 h-24 mx-auto mb-4 text-yellow-500" />
               <h2 className="text-3xl font-bold mb-4">{stage === 'keywords' ? 'Keywords Complete!' : 'Practice Complete!'}</h2>
-             className={
-  key === 'perimeter' ? 'bg-blue-500 text-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all transform hover:scale-105' :
-  key === 'area' ? 'bg-green-500 text-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all transform hover:scale-105' :
-  'bg-purple-500 text-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all transform hover:scale-105'
-}
+              <div className={`bg-${topics[topic].color}-500 text-white rounded-xl p-6 mb-6`}>
                 <p className="text-xl mb-2">Your Score</p>
                 <p className="text-5xl font-bold">{score.correct}/{score.total}</p>
                 <p className="text-2xl mt-2">{percentage}%</p>
@@ -282,11 +278,7 @@ const App = () => {
               
               <div className="space-y-3">
                 <button onClick={() => { setQuestionIndex(0); resetQuestion(); setScore({ correct: 0, total: 0 }); }}
-                 className={
-  key === 'perimeter' ? 'bg-blue-500 text-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all transform hover:scale-105' :
-  key === 'area' ? 'bg-green-500 text-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all transform hover:scale-105' :
-  'bg-purple-500 text-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all transform hover:scale-105'
-}
+                  className={`w-full bg-${topics[topic].color}-500 text-white py-3 rounded-lg font-semibold flex items-center justify-center gap-2`}>
                   <RotateCcw size={20} /> Practice Again
                 </button>
                 <button onClick={() => setScreen('stage')} className="w-full bg-gray-200 text-gray-800 py-3 rounded-lg font-semibold">
@@ -335,11 +327,7 @@ const App = () => {
                         setScore(prev => ({ correct: prev.correct + (correct ? 1 : 0), total: prev.total + 1 }));
                         setShowFeedback(correct ? 'correct' : 'wrong');
                       }}
-                     className={
-  key === 'perimeter' ? 'bg-blue-500 text-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all transform hover:scale-105' :
-  key === 'area' ? 'bg-green-500 text-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all transform hover:scale-105' :
-  'bg-purple-500 text-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all transform hover:scale-105'
-}
+                      className={`bg-${topics[type].color}-500 text-white py-6 rounded-xl font-bold text-lg hover:opacity-90 transition-all`}>
                       <div className="text-3xl mb-2">{topics[type].icon}</div>
                       {topics[type].name}
                     </button>
@@ -359,11 +347,7 @@ const App = () => {
                   </div>
                   
                   <button onClick={() => { setQuestionIndex(questionIndex + 1); resetQuestion(); }}
-                   className={
-  key === 'perimeter' ? 'bg-blue-500 text-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all transform hover:scale-105' :
-  key === 'area' ? 'bg-green-500 text-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all transform hover:scale-105' :
-  'bg-purple-500 text-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all transform hover:scale-105'
-}
+                    className={`w-full bg-${topics[topic].color}-500 text-white py-4 rounded-lg font-bold text-lg`}>
                     Next Question →
                   </button>
                 </div>

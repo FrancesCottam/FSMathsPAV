@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Calculator, CheckCircle, XCircle, Lightbulb, RotateCcw, Home, Award } from 'lucide-react';
+const { useState } = React;
+const { Calculator, CheckCircle, XCircle, Lightbulb, RotateCcw, Home, Award } = lucide;
 
 const App = () => {
   const [screen, setScreen] = useState('home');
@@ -491,4 +491,5 @@ const App = () => {
   return null;
 };
 
-export default App;
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(React.createElement(App));

@@ -338,3 +338,155 @@ const App = () => {
                       )
                   ),
                   React.createElement('p',
+                                      { className: showFeedback === 'correct' ? 'text-green-800' : 'text-red-800' },
+                    q.explanation
+                  )
+                ),
+                React.createElement('button', {
+                  onClick: () => { setQuestionIndex(questionIndex + 1); reset(); },
+                  className: "w-full text-white py-4 rounded-lg font-bold text-lg",
+                  style: { backgroundColor: topics[topic].color }
+                }, 'Next Question →')
+              )
+          )
+        )
+      );
+    }
+
+    return React.createElement('div', { className: "min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4" },
+      React.createElement('div', { className: "max-w-3xl mx-auto" },
+        React.createElement('button', {
+          onClick: () => setScreen('stage'),
+          className: "mb-4 flex items-center gap-2 text-gray-600 hover:text-gray-800 bg-white px-4 py-2 rounded-lg"
+        }, '← Back'),
+        React.createElement('div', { className: "bg-white rounded-2xl shadow-xl p-8" },
+          React.createElement('div', { className: "flex justify-between items-center mb-6" },
+            React.createElement('h2', { className: "text-2xl font-bold" }, topics[topic].name + ' Practice'),
+            React.createElement('div', { className: "flex gap-4 items-center" },
+              React.createElement('span', { className: "text-gray-600" }, 'Q ' + (questionIndex + 1) + '/' + questions.length),
+              mode === 'calculator' ?
+                React.createElement('div', { className: "flex items-center gap-2 text-blue-600 bg-blue-50 px-3 py-1 rounded-full" },
+                  React.createElement(Calculator, { size: 18 }),
+                  React.createElement('span', { className: "font-semibold text-sm" }, 'Calculator OK')
+                ) :
+                React.createElement('div', { className: "flex items-center gap-2 text-orange-600 bg-orange-50 px-3 py-1 rounded-full" },
+                  React.createElement('span', { className: "text-lg" }, '✏️'),
+                  React.createElement('span', { className: "font-semibold text-sm" }, 'No Calculator')
+                ),
+              React.createElement('span', { className: "bg-green-100 text-green-800 px-3 py-1 rounded-full font-semibold" }, score.correct + '/' + score.total)
+            )
+          ),
+          React.createElement('div', { className: "bg-blue-50 border-2 border-blue-200 rounded-lg p-6 mb-6" },
+            React.createElement('p', { className: "text-lg text-gray-800" }, q.q)
+          ),
+          React.createElement('div', { className: "bg-gray-50 rounded-lg p-6 mb-6" },
+            React.createElement('p', { className: "text-sm font-semibold text-gray-600 mb-3" }, 'DIAGRAM:'),
+            React.createElement(Diagram, { d: q.d })
+          ),
+          !showFeedback ?
+            React.createElement(React.Fragment, null,
+              React.createElement('div', { className: "mb-4" },
+                React.createElement('label', { className: "block text-gray-700 font-semibold mb-2" }, 'Your Answer:'),
+                React.createElement('div', { className: "flex gap-2" },
+                  React.createElement('input', {
+                    type: "number",
+                    step: "any",
+                    value: answer,
+                    onChange: (e) => setAnswer(e.target.value),
+                    className: "flex-1 px-4 py-3 border-2 border-gray-300 rounded-lg text-lg focus:border-indigo-500 focus:outline-none",
+                    placeholder: "Enter your answer"
+                  }),
+                  React.createElement('span', { className: "px-4 py-3 bg-gray-100 rounded-lg font-semibold" }, q.u)
+                )
+              ),
+              React.createElement('div', { className: "mb-6" },
+                React.createElement('label', { className: "block text-gray-700 font-semibold mb-2" }, 'Show Your Working (Required for L1):'),
+                React.createElement('textarea', {
+                  value: checkWork,
+                  onChange: (e) => setCheckWork(e.target.value),
+                  className: "w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none",
+                  placeholder: "Write your working and check...",
+                  rows: "3"
+                })
+              ),
+              showHint &&
+                React.createElement('div', { className: "bg-yellow-50 border-2 border-yellow-300 rounded-lg p-4 mb-4" },
+                  React.createElement('div', { className: "flex items-start gap-3" },
+                    React.createElement(Lightbulb, { className: "text-yellow-600 flex-shrink-0", size: 24 }),
+                    React.createElement('div', null,
+                      React.createElement('p', { className: "font-semibold text-yellow-900 mb-1" }, 'Hint:'),
+                      React.createElement('p', { className: "text-yellow-800" }, q.h)
+                    )
+                  )
+                ),
+              React.createElement('div', { className: "flex gap-3" },
+                React.createElement('button', {
+                  onClick: () => setShowHint(true),
+                  className: "flex-1 bg-yellow-500 text-white py-3 rounded-lg font-semibold hover:bg-yellow-600 transition-all flex items-center justify-center gap-2"
+                },
+                  React.createElement(Lightbulb, { size: 20 }),
+                  ' Show Hint'
+                ),
+                React.createElement('button', {
+                  onClick: () => {
+                    const correct = parseFloat(answer) === parseFloat(q.ans);
+                    setScore(prev => ({ correct: prev.correct + (correct ? 1 : 0), total: prev.total + 1 }));
+                    setShowFeedback(true);
+                  },
+                  disabled: !answer,
+                  className: "flex-1 text-white py-3 rounded-lg font-semibold hover:opacity-90 transition-all disabled:opacity-50",
+                  style: { backgroundColor: topics[topic].color }
+                }, 'Check Answer')
+              )
+            ) :
+            React.createElement('div', { className: "space-y-4" },
+              parseFloat(answer) === parseFloat(q.ans) ?
+                React.createElement('div', { className: "bg-green-50 border-2 border-green-300 rounded-lg p-6" },
+                  React.createElement('div', { className: "flex items-center gap-3 mb-3" },
+                    React.createElement(CheckCircle, { className: "text-green-600", size: 32 }),
+                    React.createElement('h3', { className: "text-2xl font-bold text-green-900" }, 'Correct!')
+                  ),
+                  React.createElement('div', { className: "text-green-800 space-y-2" },
+                    React.createElement('p', { className: "font-semibold" }, 'Working:'),
+                    q.w.map((step, idx) =>
+                      React.createElement('p', { key: idx }, '• ' + step)
+                    ),
+                    React.createElement('div', { className: "mt-4 p-3 bg-green-100 rounded" },
+                      React.createElement('p', { className: "font-semibold" }, 'Check:'),
+                      React.createElement('p', null, q.c)
+                    )
+                  )
+                ) :
+                React.createElement('div', { className: "bg-red-50 border-2 border-red-300 rounded-lg p-6" },
+                  React.createElement('div', { className: "flex items-center gap-3 mb-3" },
+                    React.createElement(XCircle, { className: "text-red-600", size: 32 }),
+                    React.createElement('h3', { className: "text-2xl font-bold text-red-900" }, 'Not quite right')
+                  ),
+                  React.createElement('p', { className: "text-red-800 mb-3" }, 'Correct answer: ', React.createElement('strong', null, q.ans + q.u)),
+                  React.createElement('div', { className: "text-red-800 space-y-2" },
+                    React.createElement('p', { className: "font-semibold" }, 'How to solve:'),
+                    q.w.map((step, idx) =>
+                      React.createElement('p', { key: idx }, '• ' + step)
+                    ),
+                    React.createElement('div', { className: "mt-4 p-3 bg-red-100 rounded" },
+                      React.createElement('p', { className: "font-semibold" }, 'Check:'),
+                      React.createElement('p', null, q.c)
+                    )
+                  )
+                ),
+              React.createElement('button', {
+                onClick: () => { setQuestionIndex(questionIndex + 1); reset(); },
+                className: "w-full text-white py-4 rounded-lg font-semibold text-lg hover:opacity-90",
+                style: { backgroundColor: topics[topic].color }
+              }, questionIndex < questions.length - 1 ? 'Next Question →' : 'Finish →')
+            )
+        )
+      )
+    );
+  }
+
+  return null;
+};
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(React.createElement(App));
